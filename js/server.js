@@ -1,5 +1,5 @@
-const express = require('express');
-const expressGraphQL = require('express-graphql');
+import express from 'express';
+import expressGraphQL from 'express-graphql';
 
 const app = express();
 app.use('/graphql', expressGraphQL({
