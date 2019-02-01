@@ -4,6 +4,7 @@ import {
   GraphQLInt,
   GraphQLSchema,
   GraphQLList,
+  GraphQLNonNull,
 } from 'graphql';
 import axios from 'axios';
 
@@ -63,6 +64,25 @@ const RootQuery = new GraphQLObjectType({
   },
 });
 
+const RootMutation = new GraphQLObjectType({
+  name: 'RootMutation',
+  fields: {
+    addUser: {
+      type: UserType,
+      args: {
+        firstName: { type: new GraphQLNonNull(GraphQLString) },
+        age: { type: new GraphQLNonNull(GraphQLInt) }, 
+        companyId: { type: GraphQLString },
+      },
+      resolve(parentValue, args) {
+        return axios.post(`${baseUrl}/users`, args)
+          .then(response => response.data)
+      }
+    }
+  }
+});
+
 export const schema = new GraphQLSchema({
   query: RootQuery,
+  mutation: RootMutation,
 });
